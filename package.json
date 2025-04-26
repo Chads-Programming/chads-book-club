@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "format": "biome format --fix .",
-    "lint": "biome lint --write ."
+    "lint": "biome lint --write .",
+    "dotenv:pull": "npx dotenv-vault pull",
+    "dotenv:login": "npx dotenv-vault login",
+    "dotenv:push": "npx dotenv-vault push"
   },
   "packageManager": "pnpm@10.4.1",
   "dependencies": {
