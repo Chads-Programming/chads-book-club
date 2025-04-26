@@ -8,12 +8,18 @@
     "start": "next start",
     "format": "biome format --fix .",
     "lint": "biome lint --write .",
-    "dotenv:pull": "npx dotenv-vault pull",
-    "dotenv:login": "npx dotenv-vault login",
-    "dotenv:push": "npx dotenv-vault push"
+    "dotenv:pull": "pnpx dotenv-vault pull",
+    "dotenv:login": "pnpx dotenv-vault login",
+    "dotenv:push": "pnpx dotenv-vault push",
+    "migration:create": "dotenv -- sequelize-cli migration:create",
+    "migrate": "dotenv -- sequelize-cli db:migrate",
+    "migrate:rollback": "dotenv -- sequelize-cli db:migrate:undo",
+    "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all"
   },
   "packageManager": "pnpm@10.4.1",
   "dependencies": {
+    "@hono/zod-validator": "^0.4.3",
+    "@prisma/client": "6.6.0",
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
     "class-variance-authority": "^0.7.1",
@@ -22,10 +28,14 @@
     "jose": "^6.0.10",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",
+    "pg": "^8.15.6",
+    "pg-hstore": "^2.3.4",
+    "prisma": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "sequelize": "^6.37.7",
+    "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
     "tailwind-merge": "^3.2.0",
     "zod": "^3.24.3"
@@ -34,14 +44,26 @@
     "@biomejs/biome": "1.9.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.11.14",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sequelize": "^4.28.20",
+    "dotenv-cli": "^8.0.0",
+    "sequelize-cli": "^6.6.2",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.2.8",
     "typescript": "^5"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"],
-    "onlyBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"]
+    "ignoredBuiltDependencies": [
+      "@biomejs/biome",
+      "sharp",
+      "sqlite3"
+    ],
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "sharp",
+      "sqlite3"
+    ]
   }
 }
