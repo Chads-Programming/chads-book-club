@@ -1,18 +1,19 @@
-import { kirbapi } from "./kirbapi"
+// import { kirbapi } from "./kirbapi"
 
 export const UserService = {
-  register: async (username: string) => {
-    try {
-      const res = await kirbapi.post("/user", { username })
-      if (res.ok) {
-        return res
-      }
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error(e.message)
-      }
+  register: (username: string) => {
+    return true
+    // try {
+    //   const res = await kirbapi.post("/user", { username })
+    //   if (res.ok) {
+    //     return res
+    //   }
+    // } catch (e: unknown) {
+    //   if (e instanceof Error) {
+    //     console.error(e.message)
+    //   }
 
-      console.error(e)
-    }
+    //   console.error(e)
+    // }
   },
 }
