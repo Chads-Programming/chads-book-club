@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "format": "biome format --fix .",
+    "lint": "biome lint --write ."
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.2",
