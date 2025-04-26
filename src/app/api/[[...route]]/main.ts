@@ -1,0 +1,20 @@
+import { authRouter } from "./controllers/auth.controller"
+import { bookRouter } from "./controllers/book.controller"
+import { createRouter } from "./utils/create-router"
+import { checkEnv } from "./utils/env"
+
+export const runtime = "edge"
+
+const baseApp = createRouter()
+
+checkEnv()
+export const app = baseApp.basePath("/api")
+
+app.get("/ok", (c) =>
+  c.json({
+    message: "ok",
+  }),
+)
+
+app.route("/auth", authRouter)
+app.route("/books", bookRouter)
