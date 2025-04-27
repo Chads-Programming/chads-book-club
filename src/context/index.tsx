@@ -2,6 +2,7 @@
 
 import { UserService } from "@/services/user";
 import { createContext, useContext, useReducer } from "react";
+import type { OpenLibraryBook } from "@/api/types/open-library-book.type";
 
 interface KirbContextType {
   state: State;
@@ -15,10 +16,15 @@ const initialState = {
 
 type State = typeof initialState;
 
+type BookPayload = {
+  books: OpenLibraryBook[];
+  totalCount: number;
+};
+
 type Action =
   | { type: "SET_USER_REGISTERED"; payload: boolean }
   | { type: "LOGOUT" }
-  | { type: "UNKNOWN" };
+  | { type: "SET_BOOKS"; payload: BookPayload };
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -27,13 +33,18 @@ const reducer = (state: State, action: Action) => {
         ...state,
         userRegistered: action.payload,
       };
+    case "SET_BOOKS":
+      return {
+        ...state,
+        books: action.payload,
+      };
     case "LOGOUT":
       return {
         ...state,
         userRegistered: false,
       };
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return state;
     }
   }
 };
@@ -53,8 +64,8 @@ export const KirbContextProvider = ({
   };
 
   const createSession = () => {
-    dispatch({ type: "SET_USER_REGISTERED", payload: true })
-  }
+    dispatch({ type: "SET_USER_REGISTERED", payload: true });
+  };
 
   return (
     <KirbContext.Provider value={{ state, logout, createSession }}>

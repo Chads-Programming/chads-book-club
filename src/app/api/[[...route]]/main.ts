@@ -1,5 +1,6 @@
 import { authRouter } from "./controllers/auth.controller"
 import { bookRouter } from "./controllers/book.controller"
+import { submissionsRouter } from "./controllers/submissions.controller"
 import { createRouter } from "./utils/create-router"
 import { checkEnv } from "./utils/env"
 
@@ -18,3 +19,4 @@ app.get("/ok", (c) =>
 
 app.route("/auth", authRouter)
 app.route("/books", bookRouter)
+app.route("/submissions", submissionsRouter)

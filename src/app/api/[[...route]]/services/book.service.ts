@@ -1,15 +1,24 @@
 import type { BookSearchQuery } from "../dtos/book-search.dto"
-import type { BookSubmitDto } from "../dtos/book-submit.dto"
-import type { OpenLibrarySearchResponse } from "../types/open-library-book.type"
+import type {
+  OpenLibraryAuthorResponse,
+  OpenLibraryBookGetResponse,
+  OpenLibraryBookRatingsResponse,
+  OpenLibrarySearchResponse,
+} from "../types/open-library-book.type"
 
 export const searchBooks = async (searchParams: BookSearchQuery) => {
   const response = await fetch(`https://openlibrary.org/search.json?q=${searchParams.query}`)
   const data: OpenLibrarySearchResponse = await response.json()
 
+  data.docs = data.docs.map((doc) => ({
+    ...doc,
+    key: doc.key.replace("/works/", ""),
+  }))
+
   return data
 }
 
-export const getBook = async (bookId: string) => {
+export const getBook = async (bookId: string): Promise<OpenLibraryBookGetResponse | null> => {
   const response = await fetch(`https://openlibrary.org/books/${bookId}.json`)
   const data = await response.json()
 
@@ -18,8 +27,33 @@ export const getBook = async (bookId: string) => {
   return data
 }
 
-export const submitBook = async (book: BookSubmitDto) => {
-  console.log({ book })
+export const getBookDetails = async (bookId: string) => {
+  const book = await getBook(bookId)
+  if (!book) return null
+  const ratings = await getBookRatings(bookId)
+  const authorsRes = await Promise.all(
+    book.authors?.map(async (author) => await getAuthor(author.author.key)) || [],
+  )
 
-  return true
+  const authors = authorsRes.filter((author) => !!author).map((author) => author.name)
+  return {
+    ...book,
+    rating: ratings?.average || 0,
+    authors,
+  }
+}
+
+export const getAuthor = async (authorId: string) => {
+  const response = await fetch(`https://openlibrary.org/${authorId}.json`)
+  const data: OpenLibraryAuthorResponse = await response.json()
+  if ((data as any).error) return null
+
+  return data
+}
+
+export const getBookRatings = async (bookId: string) => {
+  const response = await fetch(`https://openlibrary.org/works/${bookId}/ratings.json`)
+  const data: OpenLibraryBookRatingsResponse = await response.json()
+  if ((data as any).error) return null
+  return data.summary
 }

@@ -1,5 +1,5 @@
-import { CiStar } from "react-icons/ci";
+import { CiStar } from "react-icons/ci"
 
 export function RenderStars({ count }: { count: number }) {
-  return Array.from({ length: count }, (_, i) => <CiStar key={i} size={20} />);
+  return Array.from({ length: count }, (_, i) => <CiStar key={i} size={20} />)
 }
