@@ -19,10 +19,10 @@ model BookSubmission {
   id    String  @id @default(cuid())
   userId String
   user   User   @relation(fields: [userId], references: [id])
-  bookId String
-  coverUrl  String
+  bookId String @unique
+  coverUrl  String?
   title  String
-  author String
+  authors String[]
   votes SubmissionVote[]
 }
 
