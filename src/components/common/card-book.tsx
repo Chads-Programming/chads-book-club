@@ -5,13 +5,17 @@ import { FaPlus } from "react-icons/fa6"
 
 import { Rating } from "./rating"
 import { Heading } from "./heading"
+import { Paragraph } from "./paragraph"
+
 interface CardBookProps {
   title: string
   srcImage: string | StaticImageData
   stars: number
+  authors: string[]
+  id: string
 }
 
-export function CardBook({ title, srcImage, stars }: CardBookProps) {
+export function CardBook({ title, srcImage, stars, authors, id }: CardBookProps) {
   return (
     <article className="w-full max-w-[200px] flex flex-col gap-1">
       <div className="relative max-h-[250px] rounded-lg overflow-hidden cursor-pointer">
@@ -34,7 +38,10 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
       <Heading size="xs" className="mt-2">
         {title}
       </Heading>
-      <Rating stars={stars} />
+      <Paragraph className="text-[#777]" size="xs">
+        {authors.join(", ")}
+      </Paragraph>
+      <Rating stars={stars} id={id} />
     </article>
   )
 }

@@ -59,7 +59,14 @@ export default function AddBookPage() {
 
       <div className="flex flex-wrap gap-4 mx-auto justify-center">
         {state.books.books.map((book) => (
-          <CardBook key={book.key} srcImage={book.coverUrl} title={book.title} stars={book.rating} />
+          <CardBook
+            key={book.key}
+            id={book.key}
+            srcImage={book.coverUrl}
+            authors={book.authors}
+            title={book.title}
+            stars={book.rating}
+          />
         ))}
       </div>
     </section>
