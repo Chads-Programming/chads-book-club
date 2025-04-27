@@ -38,6 +38,7 @@ bookRouter.get('/:id', async (c) => {
     book
   })
 })
+
 bookRouter.post('/submit-book', userMiddleware, zValidator("json", bookSubmitDto), async (c) => {
 
   const user: UserPayload | null = c.get('jwtPayload')

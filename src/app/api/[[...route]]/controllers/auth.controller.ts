@@ -30,7 +30,7 @@ authRouter.post("/login", zValidator("json", loginDto), async (c) => {
   })
 })
 
-authRouter.post("/logout", async (c) => {
+authRouter.delete("/logout", async (c) => {
   deleteCookie(c, "token")
 
   return c.json({
