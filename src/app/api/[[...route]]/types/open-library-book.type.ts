@@ -25,3 +25,5 @@ export interface OpenLibrarySearchResponse {
   offset: null
   docs: OpenLibraryBook[]
 }
+
+export interface OpenLibraryBookGetResponse {}

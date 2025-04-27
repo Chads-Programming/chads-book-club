@@ -6,6 +6,11 @@ export const searchBooks = async (searchParams: BookSearchQuery) => {
   const response = await fetch(`https://openlibrary.org/search.json?q=${searchParams.query}`)
   const data: OpenLibrarySearchResponse = await response.json()
 
+  data.docs = data.docs.map((doc) => ({
+    ...doc,
+    key: doc.key.replace("/works/", ""),
+  }))
+
   return data
 }
 
@@ -19,7 +24,9 @@ export const getBook = async (bookId: string) => {
 }
 
 export const submitBook = async (book: BookSubmitDto) => {
-  console.log({ book })
+  const foundBook = await getBook(book.id)
 
-  return true
+  if (!foundBook) return null
+  
+  return book
 }
