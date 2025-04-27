@@ -2,26 +2,33 @@
 
 import { Heading } from "@/components/common"
 import { CardBook } from "@/components/common/card-book"
-import {
-  Input,
-} from "@/components/ui"
+import { Input } from "@/components/ui"
 import { useBooks } from "@/context/book-context"
 import { useDebounceCallback } from "@/hooks/use-debouce.hook"
 import { BookService } from "@/services/book"
+import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function AddBookPage() {
   const [search, setSearch] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const { state, setBooks, clearBooks } = useBooks()
   const debounceCallback = useDebounceCallback(1000)
 
   const onSearch = async (search: string) => {
-    const res = await BookService.getBooksByQuery(search)
-    if (!res) return
+    try {
+      setIsLoading(true)
+      const res = await BookService.getBooksByQuery(search)
+      if (!res) return
 
-    const data = { books: res.data, totalCount: res.totalCount }
+      const data = { books: res.data, totalCount: res.totalCount }
 
-    setBooks(data)
+      setBooks(data)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -40,18 +47,22 @@ export default function AddBookPage() {
         placeholder="Busca un libro"
       />
 
-      <div className="flex flex-wrap gap-4 mx-auto justify-center">
-        {state.books.books.map((book) => (
-          <CardBook
-            key={book.key}
-            id={book.key}
-            srcImage={book.coverUrl}
-            authors={book.authors}
-            title={book.title}
-            stars={book.rating}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <Loader2 size={34} className="animate-spin mt-12" />
+      ) : (
+        <div className="flex flex-wrap gap-4 mx-auto justify-center">
+          {state.books.books.map((book) => (
+            <CardBook
+              key={book.key}
+              id={book.key}
+              srcImage={book.coverUrl}
+              authors={book.authors}
+              title={book.title}
+              stars={book.rating}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
