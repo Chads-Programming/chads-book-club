@@ -1,0 +1,15 @@
+meta {
+  name: search books
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/api/books/search?query=El Principito
+  body: none
+  auth: none
+}
+
+params:query {
+  query: El Principito
+}

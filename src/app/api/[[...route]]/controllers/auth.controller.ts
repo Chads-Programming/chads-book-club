@@ -4,6 +4,7 @@ import { env } from "@/api/utils/env"
 import { zValidator } from "@hono/zod-validator"
 import { loginDto } from "../dtos/auth-login.dto"
 import { getOrCreateUser } from "../services/login.service"
+import { deleteCookie } from "hono/cookie"
 
 export const authRouter = createRouter()
 
@@ -20,11 +21,19 @@ authRouter.post("/login", zValidator("json", loginDto), async (c) => {
     },
     secret,
   )
-  
+
   c.header("Set-Cookie", `token=${token}; HttpOnly; Path=/;`)
 
   return c.json({
     message: "Logged in!",
     token,
+  })
+})
+
+authRouter.post("/logout", async (c) => {
+  deleteCookie(c, "token")
+
+  return c.json({
+    message: "Logged out!",
   })
 })
