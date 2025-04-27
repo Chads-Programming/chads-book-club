@@ -1,5 +1,5 @@
 import { kirbapi } from "./kirbapi"
-import { Book } from "@/api/types/book.type"
+import type { Book } from "@/api/types/book.type"
 
 export type BookSearchResponse = {
   message: string

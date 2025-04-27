@@ -12,7 +12,6 @@ interface CardBookProps {
 }
 
 export function CardBook({ title, srcImage, stars }: CardBookProps) {
-
   return (
     <article className="w-full max-w-[200px] flex flex-col gap-1">
       <div className="relative max-h-[250px] rounded-lg overflow-hidden cursor-pointer">
@@ -21,7 +20,9 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
           alt={title}
           width={400}
           height={300}
-          className={"object-cover w-full h-full transition-opacity duration-200 opacity-100 hover:opacity-75"}
+          className={
+            "object-cover w-full h-full transition-opacity duration-200 opacity-100 hover:opacity-75"
+          }
         />
 
         <button
@@ -30,7 +31,9 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
           <FaPlus />
         </button>
       </div>
-      <Heading size="xs" className="mt-2">{title}</Heading>
+      <Heading size="xs" className="mt-2">
+        {title}
+      </Heading>
       <Rating stars={stars} />
     </article>
   )

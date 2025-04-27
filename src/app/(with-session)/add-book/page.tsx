@@ -21,7 +21,7 @@ export default function AddBookPage() {
   const [search, setSearch] = useState("")
   const { state, setBooks, clearBooks } = useBooks()
   const debounceCallback = useDebounceCallback(1000)
-  
+
   const onSearch = async (search: string) => {
     const res = await BookService.getBooksByQuery(search)
     if (!res) return

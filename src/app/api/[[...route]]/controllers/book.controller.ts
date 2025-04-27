@@ -2,7 +2,7 @@ import { createRouter } from "@/api/utils/create-router"
 import { zValidator } from "@hono/zod-validator"
 import { bookSearchQueryDto } from "../dtos/book-search.dto"
 import { getBook, searchBooks } from "../services/book.service"
-import { Book } from "../types/book.type"
+import type { Book } from "../types/book.type"
 
 export const bookRouter = createRouter()
 

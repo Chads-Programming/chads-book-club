@@ -7,7 +7,9 @@ import type {
 } from "../types/open-library-book.type"
 
 export const searchBooks = async (searchParams: BookSearchQuery) => {
-  const response = await fetch(`https://openlibrary.org/search.json?q=${searchParams.query}&limit=10&fields=key,title,cover_i,author_name,first_publish_year,ratings_average`)
+  const response = await fetch(
+    `https://openlibrary.org/search.json?q=${searchParams.query}&limit=10&fields=key,title,cover_i,author_name,first_publish_year,ratings_average`,
+  )
   const data: OpenLibrarySearchResponse = await response.json()
   data.docs = data.docs.map((doc) => ({
     ...doc,

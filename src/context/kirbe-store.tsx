@@ -88,7 +88,7 @@ export const KirbContextProvider = ({
   }
 
   return (
-    <KirbContext.Provider value={{ state, clearSession, createSession, setBooks, clearBooks}}>
+    <KirbContext.Provider value={{ state, clearSession, createSession, setBooks, clearBooks }}>
       {children}
     </KirbContext.Provider>
   )
