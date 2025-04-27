@@ -1,9 +1,8 @@
 "use client"
-import { BookVotation } from "@/components"
 import { Input } from "@/components/ui"
-import { KirbContext } from "@/context"
-import { UserService } from "@/services/user"
-import { useContext, useState } from "react"
+import { useAuth } from "@/context/auth-context"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { PiArrowCircleRightFill } from "react-icons/pi"
 
 const MIN_USERNAME_LENGTH = 3 as const
@@ -11,11 +10,8 @@ const MIN_USERNAME_LENGTH = 3 as const
 export default function Home() {
   const [username, setUsername] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { state, dispatch } = useContext(KirbContext)
-
-  if (state.userRegistered) {
-    return <BookVotation />
-  }
+  const { login } = useAuth()
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -30,15 +26,19 @@ export default function Home() {
     }
 
     setErrorMessage(null)
-    const userRegistered = await UserService.loginOrRegister(username)
-    if (!userRegistered) {
-      setErrorMessage("Hubo un error al registrar el usuario")
-      return
-    }
 
-    if (userRegistered.token) {
-      dispatch({ type: "SET_USER_REGISTERED", payload: true })
-    }
+    login(
+      { username },
+      {
+        onSuccess: () => {
+          router.replace("/lobby")
+        },
+        onError: (error) => {
+          setErrorMessage("Hubo un error al registrar el usuario")
+          console.error(error)
+        },
+      },
+    )
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

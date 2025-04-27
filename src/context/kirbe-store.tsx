@@ -1,8 +1,12 @@
 "use client"
-
+import { createContext, useContext, useReducer } from "react"
 import type { OpenLibraryBook } from "@/api/types/open-library-book.type"
-import { UserService } from "@/services/user"
-import { createContext, useReducer } from "react"
+
+interface KirbContextType {
+  state: State
+  clearSession: () => void
+  createSession: () => void
+}
 
 const initialState = {
   userRegistered: false,
@@ -43,19 +47,32 @@ const reducer = (state: State, action: Action) => {
   }
 }
 
-export const KirbContext = createContext({
-  state: initialState,
-  dispatch: (action: Action) => {},
-  logout: async () => {},
-})
+export const KirbContext = createContext<KirbContextType | null>(null)
 
-export const KirbContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const KirbContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const logout = async () => {
-    await UserService.logout()
+  const clearSession = async () => {
     dispatch({ type: "LOGOUT" })
   }
 
-  return <KirbContext.Provider value={{ state, dispatch, logout }}>{children}</KirbContext.Provider>
+  const createSession = () => {
+    dispatch({ type: "SET_USER_REGISTERED", payload: true })
+  }
+
+  return (
+    <KirbContext.Provider value={{ state, clearSession, createSession }}>{children}</KirbContext.Provider>
+  )
+}
+
+export const useKirbe = () => {
+  const context = useContext(KirbContext)
+  if (!context) {
+    throw new Error("useKirbContext must be used within a KirbContextProvider")
+  }
+  return context
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
-import { KirbContextProvider } from "@/context"
+import { KirbContextProvider } from "@/context/kirbe-store"
+import { AuthProvider } from "@/context/auth-context"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <KirbContextProvider>
-          <main className="min-h-screen p-10 max-w-7xl mx-auto">{children}</main>
+          <AuthProvider>
+            <main className="min-h-screen p-10 max-w-7xl mx-auto">{children}</main>
+          </AuthProvider>
         </KirbContextProvider>
       </body>
     </html>
