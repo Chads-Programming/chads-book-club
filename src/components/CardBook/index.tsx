@@ -1,8 +1,8 @@
 import Image, { StaticImageData } from "next/image";
-import { CiStar } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
 
 import { useState } from "react";
+import { RenderStars } from "../RenderStars";
 interface CardBookProps {
   title: string;
   srcImage: string | StaticImageData;
@@ -13,9 +13,6 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
-
-  const renderStars = (count: number) =>
-    Array.from({ length: count }, (_, i) => <CiStar key={i} size={20} />);
 
   return (
     <article
@@ -37,7 +34,9 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
         </button>
       </div>
       <h3 className="mt-2">{title}</h3>
-      <div className=" flex">{renderStars(stars)}</div>
+      <div className=" flex">
+        <RenderStars count={stars} />
+      </div>
     </article>
   );
 }
