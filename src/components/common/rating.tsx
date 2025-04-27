@@ -17,13 +17,13 @@ export const Rating = ({ stars, maxStars = MAX_RATING, id }: RatingProps) => {
     <div className="flex justify-start items-start text-primary">
       {stars > 0 &&
         Array.from({ length: fullStars }).map((_, i) => (
-          <FaStar key={`rating-${id}-${stars}-full-star`} size={18} />
+          <FaStar color="gold" key={`rating-${id}-${i.toString()}-full-star`} size={18} />
         ))}
 
-      {stars > 0 && hasHalfStar && <FaStarHalfStroke key={`rating-${id}-${stars}-half-star`} size={18} />}
+      {stars > 0 && hasHalfStar && <FaStarHalfStroke color="gold" key={`rating-${id}-half-star`} size={18} />}
 
       {Array.from({ length: stars === 0 ? maxStars : emptyStars }).map((_, i) => (
-        <FaRegStar key={`rating-${id}-${stars}-empty-star`} size={18} />
+        <FaRegStar color="gold" key={`rating-${id}-${i.toString()}-empty-star`} size={18} />
       ))}
     </div>
   )

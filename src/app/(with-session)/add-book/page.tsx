@@ -37,25 +37,15 @@ export default function AddBookPage() {
   }, [search])
 
   return (
-    <section className="flex flex-col gap-10 items-center">
+    <section className="w-full flex flex-col gap-10 items-center">
       <Heading>Agrega un libro</Heading>
 
-      <div className="flex gap-2 w-full max-w-xs">
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Libros</SelectLabel>
-              <SelectItem value="harry potter">Harry Potter</SelectItem>
-              <SelectItem value="harry potter">Harry Potter</SelectItem>
-              <SelectItem value="harry potter">Harry Potter</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Busca un libro" />
-      </div>
+      <Input
+        className="max-w-xs"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Busca un libro"
+      />
 
       <div className="flex flex-wrap gap-4 mx-auto justify-center">
         {state.books.books.map((book) => (
