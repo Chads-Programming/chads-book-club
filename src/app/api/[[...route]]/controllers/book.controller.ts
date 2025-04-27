@@ -1,14 +1,9 @@
 import { createRouter } from "@/api/utils/create-router"
 import { zValidator } from "@hono/zod-validator"
 import { bookSearchQueryDto } from "../dtos/book-search.dto"
-import { getBook, searchBooks, submitBook } from "../services/book.service"
-import { bookSubmitDto } from "../dtos/book-submit.dto"
-import { userMiddleware } from "../middlewares/user.middleware"
-import type { UserPayload } from "../types/user-payload.type"
+import { getBook, searchBooks } from "../services/book.service"
 
 export const bookRouter = createRouter()
-
-//bookRouter.use("/*", userMiddleware)
 
 bookRouter.get("/search", zValidator("query", bookSearchQueryDto), async (c) => {
   const searchParams = c.req.valid("query")
@@ -17,8 +12,8 @@ bookRouter.get("/search", zValidator("query", bookSearchQueryDto), async (c) => 
 
   return c.json({
     message: "Books Found",
-    books: books.docs,
-    totalCount: books.numFound,
+    data: books.docs,
+    totalCount: books.numFound
   })
 })
 
@@ -38,18 +33,6 @@ bookRouter.get("/:id", async (c) => {
 
   return c.json({
     message: "Book Submitted",
-    book,
-  })
-})
-
-bookRouter.post("/submit-book", userMiddleware, zValidator("json", bookSubmitDto), async (c) => {
-  const user: UserPayload | null = c.get("jwtPayload")
-  const book = c.req.valid("json")
-
-  const bookSubmit = await submitBook(book)
-
-  return c.json({
-    message: "Book Submitted",
-    bookSubmit,
+    data: book,
   })
 })
