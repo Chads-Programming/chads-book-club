@@ -25,7 +25,7 @@ export const BookList = ({ books, onBookClick }: BookListProps) => {
   return (
     <ul>
       {books.map((book) => (
-        <li onKeyUp={() => onBookClick(book)}  key={book.key} onClick={() => onBookClick(book)}>
+        <li onKeyUp={() => onBookClick(book)} key={book.key} onClick={() => onBookClick(book)}>
           <BookListItem book={book} />
         </li>
       ))}

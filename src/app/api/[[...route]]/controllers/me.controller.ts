@@ -12,7 +12,7 @@ meRouter.get("/", async (c) => {
 
   return c.json({
     message: "ok",
-    data: user
+    data: user,
   })
 })
 
