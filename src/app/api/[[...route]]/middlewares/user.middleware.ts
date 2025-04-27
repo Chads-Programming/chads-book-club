@@ -6,6 +6,8 @@ import type { Env } from "@/api/types/hono.type"
 export const userMiddleware = (c: Context, next: Next) => {
   const jwtMiddleware = jwt({
     secret: env<Env>(c).JWT_SECRET,
+    cookie: 'token',
+    alg: 'HS256',
   })
   const user = c.get('jwtPayload')
   console.log({user})
