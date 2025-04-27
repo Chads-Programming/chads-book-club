@@ -1,19 +1,26 @@
-// import { kirbapi } from "./kirbapi"
+import { kirbapi } from "./kirbapi"
+
+type UserRegisterResponse = {
+  message: string
+  token: string
+}
 
 export const UserService = {
-  register: (username: string) => {
-    return true
-    // try {
-    //   const res = await kirbapi.post("/user", { username })
-    //   if (res.ok) {
-    //     return res
-    //   }
-    // } catch (e: unknown) {
-    //   if (e instanceof Error) {
-    //     console.error(e.message)
-    //   }
+  loginOrRegister: async (username: string) => {
+    try {
+      const data = await kirbapi.post<UserRegisterResponse>("auth/login", { username })
+      return data
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error(e.message)
+      }
 
-    //   console.error(e)
-    // }
+      console.error(e)
+
+      return null
+    }
+  },
+  logout: async () => {
+    await kirbapi.delete("auth/logout")
   },
 }

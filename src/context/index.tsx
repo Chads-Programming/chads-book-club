@@ -1,5 +1,6 @@
 "use client"
 
+import { UserService } from "@/services/user"
 import { createContext, useReducer } from "react"
 
 const initialState = {
@@ -8,7 +9,7 @@ const initialState = {
 
 type State = typeof initialState
 
-type Action = { type: "SET_USER_REGISTERED"; payload: boolean } | { type: "UNKNOWN" }
+type Action = { type: "SET_USER_REGISTERED"; payload: boolean } | { type: "LOGOUT" } | { type: "UNKNOWN" }
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -16,6 +17,11 @@ const reducer = (state: State, action: Action) => {
       return {
         ...state,
         userRegistered: action.payload,
+      }
+    case "LOGOUT":
+      return {
+        ...state,
+        userRegistered: false,
       }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
@@ -26,10 +32,16 @@ const reducer = (state: State, action: Action) => {
 export const KirbContext = createContext({
   state: initialState,
   dispatch: (action: Action) => {},
+  logout: async () => {},
 })
 
 export const KirbContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  return <KirbContext.Provider value={{ state, dispatch }}>{children}</KirbContext.Provider>
+  const logout = async () => {
+    await UserService.logout()
+    dispatch({ type: "LOGOUT" })
+  }
+
+  return <KirbContext.Provider value={{ state, dispatch, logout }}>{children}</KirbContext.Provider>
 }
