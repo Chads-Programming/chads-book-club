@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const bookSubmitDto = z.object({
-    bookId: z.string(),
+  bookId: z.string(),
 })
 
 export type BookSubmitDto = z.infer<typeof bookSubmitDto>

@@ -1,6 +1,6 @@
 import type { BookSearchQuery } from "../dtos/book-search.dto"
-import { BookSubmitDto } from "../dtos/book-submit.dto"
-import { OpenLibrarySearchResponse } from "../types/open-library-book.type"
+import type { BookSubmitDto } from "../dtos/book-submit.dto"
+import type { OpenLibrarySearchResponse } from "../types/open-library-book.type"
 
 export const searchBooks = async (searchParams: BookSearchQuery) => {
   const response = await fetch(`https://openlibrary.org/search.json?q=${searchParams.query}`)

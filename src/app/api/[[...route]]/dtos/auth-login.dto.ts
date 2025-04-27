@@ -1,5 +1,5 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const loginDto = z.object({
-    username: z.string().min(1),
+  username: z.string().min(1),
 })
