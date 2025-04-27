@@ -10,7 +10,9 @@ const options: RequestInit = {
 export const kirbapi = {
   get: async <TResponse>(url: string): Promise<TResponse> => {
     const response = await fetch(`${API_BASE_URL}/api/${url}`)
-    return await response.json()
+    const res = await response.json()
+    if (!response.ok && res?.message) throw new Error(res.message)
+    return res
   },
   post: async <TResponse>(url: string, data: any): Promise<TResponse> => {
     const response = await fetch(`${API_BASE_URL}/api/${url}`, {
@@ -18,7 +20,9 @@ export const kirbapi = {
       method: "POST",
       body: JSON.stringify(data),
     })
-    return await response.json()
+    const res = await response.json()
+    if (!response.ok && res?.message) throw new Error(res.message)
+    return res
   },
   put: async <TResponse>(url: string, data: any): Promise<TResponse> => {
     const response = await fetch(`${API_BASE_URL}/api/${url}`, {
@@ -29,13 +33,30 @@ export const kirbapi = {
       },
       body: JSON.stringify(data),
     })
-    return await response.json()
+    const res = await response.json()
+    if (!response.ok && res?.message) throw new Error(res.message)
+    return res
+  },
+  patch: async <TResponse>(url: string, data: any): Promise<TResponse> => {
+    const response = await fetch(`${API_BASE_URL}/api/${url}`, {
+      ...options,
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    const res = await response.json()
+    if (!response.ok && res?.message) throw new Error(res.message)
+    return res
   },
   delete: async <TResponse>(url: string): Promise<TResponse> => {
     const response = await fetch(`${API_BASE_URL}/api/${url}`, {
       ...options,
       method: "DELETE",
     })
-    return await response.json()
+    const res = await response.json()
+    if (!response.ok && res?.message) throw new Error(res.message)
+    return res
   },
 }

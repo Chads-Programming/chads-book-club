@@ -29,7 +29,9 @@ model BookSubmission {
 model SubmissionVote {
   id               String         @id @default(cuid())
   bookSubmissionId String
-  bookSubmission   BookSubmission @relation(fields: [bookSubmissionId], references: [id])
+  bookSubmission   BookSubmission @relation(fields: [bookSubmissionId], references: [id], onDelete: Cascade)
   userId           String
   user             User           @relation(fields: [userId], references: [id])
+  
+  @@index([userId, bookSubmissionId])
 }

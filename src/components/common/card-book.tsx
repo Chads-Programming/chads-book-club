@@ -6,6 +6,9 @@ import { FaPlus } from "react-icons/fa6"
 import { Rating } from "./rating"
 import { Heading } from "./heading"
 import { Paragraph } from "./paragraph"
+import BookSubmitConfirm from "../book-submit-confirm"
+import { SubmissionService } from "@/services/submission"
+import { toast } from "sonner"
 
 interface CardBookProps {
   title: string
@@ -16,6 +19,14 @@ interface CardBookProps {
 }
 
 export function CardBook({ title, srcImage, stars, authors, id }: CardBookProps) {
+  const handleSubmit = async () => {
+    toast.promise(SubmissionService.submitBook(id), {
+      loading: "Submitting...",
+      success: "Book submitted successfully",
+      error: (error) => error.message,
+    })
+  }
+
   return (
     <article className="w-full max-w-[200px] flex flex-col gap-1">
       <div className="relative max-h-[250px] rounded-lg overflow-hidden cursor-pointer">
@@ -29,11 +40,8 @@ export function CardBook({ title, srcImage, stars, authors, id }: CardBookProps)
           }
         />
 
-        <button
-          type="button"
-          className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md transition-transform duration-200 hover:scale-110 cursor-pointer hover:rotate-180">
-          <FaPlus />
-        </button>
+        <BookSubmitConfirm handleConfirm={handleSubmit} />
+
       </div>
       <Heading size="xs" className="mt-2">
         {title}

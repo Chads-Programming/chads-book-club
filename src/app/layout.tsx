@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { KirbContextProvider } from "@/context/kirbe-store"
 import { AuthProvider } from "@/context/auth-context"
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
             <main className="min-h-screen p-10 max-w-7xl mx-auto">{children}</main>
           </AuthProvider>
         </KirbContextProvider>
+        <Toaster richColors />
       </body>
     </html>
   )

@@ -1,7 +1,8 @@
-import type { Prisma } from "@prisma/client"
+import type { BookSubmission, Prisma } from "@prisma/client"
 import prisma from "../db/prisma"
 import type { BookSubmitDto } from "../dtos/book-submit.dto"
 import { getBookDetails } from "./book.service"
+import { BookVoteAction } from "../types/book-vote.type"
 
 export const submitBook = async (book: BookSubmitDto, userId: string) => {
   const foundSubmission = await prisma.bookSubmission.findUnique({
@@ -36,9 +37,14 @@ export const submitBook = async (book: BookSubmitDto, userId: string) => {
   return submission
 }
 
-export const findSubmissionsWithVotes = async (where?: Prisma.BookSubmissionWhereInput) => {
+export const findSubmissionsWithVotes = async (where: Prisma.BookSubmissionWhereInput, userId: string) => {
   const submissionsRaw = await prisma.bookSubmission.findMany({
     where,
+    orderBy: {
+      votes: {
+        _count: "desc",
+      },
+    },
     include: {
       _count: {
         select: {
@@ -59,8 +65,57 @@ export const findSubmissionsWithVotes = async (where?: Prisma.BookSubmissionWher
 
   const submissions = submissionsRaw.map((submission) => {
     const { _count, ...rest } = submission
-    return { ...rest, votes: submission?._count?.votes || 0 }
+    return {
+      ...rest,
+      isVotedByMe: submission.votes.some((vote) => vote.userId === userId),
+      votes: submission?._count?.votes || 0,
+      createdByMe: submission.userId === userId,
+    }
   })
 
   return submissions
+}
+
+export const submitVote = async (submissionId: string, action: BookVoteAction, userId: string) => {
+  const submission = await prisma.bookSubmission.findUnique({
+    where: {
+      id: submissionId,
+    },
+  })
+
+  if (!submission) throw new Error("Submission not found")
+  if (action === BookVoteAction.LIKE)
+    await prisma.submissionVote.create({
+      data: {
+        bookSubmissionId: submissionId,
+        userId,
+      },
+    })
+  else if (action === BookVoteAction.DISLIKE)
+    await prisma.submissionVote.deleteMany({
+      where: {
+        userId,
+        bookSubmissionId: submissionId,
+      },
+    })
+
+  return action
+}
+
+export const deleteSubmission = async (submissionId: string, userId: string) => {
+  const submission = await prisma.bookSubmission.findUnique({
+    where: {
+      id: submissionId,
+      userId,
+    },
+  })
+
+  if (!submission) throw new Error("Submission not found")
+
+  return await prisma.bookSubmission.deleteMany({
+    where: {
+      id: submissionId,
+      userId
+    },
+  })
 }

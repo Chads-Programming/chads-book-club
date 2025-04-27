@@ -1,11 +1,10 @@
-import { useContext } from "react"
 import { Heading } from "./common"
 import { Button } from "./ui"
-import { KirbContext } from "@/context/kirbe-store"
 import Link from "next/link"
+import { useAuth } from "@/context/auth-context"
 
 export const BookVotation = () => {
-  const { logout } = useContext(KirbContext)
+  const { logout } = useAuth()
 
   return (
     <section className="flex flex-col gap-10 items-start">
