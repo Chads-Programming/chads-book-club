@@ -1,15 +1,24 @@
-"use client"
+"use client";
 
-import { UserService } from "@/services/user"
-import { createContext, useReducer } from "react"
+import { UserService } from "@/services/user";
+import { createContext, useContext, useReducer } from "react";
+
+interface KirbContextType {
+  state: State;
+  logout: () => Promise<void>;
+  createSession: () => void;
+}
 
 const initialState = {
   userRegistered: false,
-}
+};
 
-type State = typeof initialState
+type State = typeof initialState;
 
-type Action = { type: "SET_USER_REGISTERED"; payload: boolean } | { type: "LOGOUT" } | { type: "UNKNOWN" }
+type Action =
+  | { type: "SET_USER_REGISTERED"; payload: boolean }
+  | { type: "LOGOUT" }
+  | { type: "UNKNOWN" };
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -17,31 +26,47 @@ const reducer = (state: State, action: Action) => {
       return {
         ...state,
         userRegistered: action.payload,
-      }
+      };
     case "LOGOUT":
       return {
         ...state,
         userRegistered: false,
-      }
+      };
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
+      throw new Error(`Unhandled action type: ${action.type}`);
     }
   }
-}
+};
 
-export const KirbContext = createContext({
-  state: initialState,
-  dispatch: (action: Action) => {},
-  logout: async () => {},
-})
+export const KirbContext = createContext<KirbContextType | null>(null);
 
-export const KirbContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+export const KirbContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const logout = async () => {
-    await UserService.logout()
-    dispatch({ type: "LOGOUT" })
+    await UserService.logout();
+    dispatch({ type: "LOGOUT" });
+  };
+
+  const createSession = () => {
+    dispatch({ type: "SET_USER_REGISTERED", payload: true })
   }
 
-  return <KirbContext.Provider value={{ state, dispatch, logout }}>{children}</KirbContext.Provider>
-}
+  return (
+    <KirbContext.Provider value={{ state, logout, createSession }}>
+      {children}
+    </KirbContext.Provider>
+  );
+};
+
+export const useKirbe = () => {
+  const context = useContext(KirbContext);
+  if (!context) {
+    throw new Error("useKirbContext must be used within a KirbContextProvider");
+  }
+  return context;
+};

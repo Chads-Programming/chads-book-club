@@ -1,6 +1,6 @@
 import { kirbapi } from "./kirbapi"
 
-type UserRegisterResponse = {
+export type UserRegisterResponse = {
   message: string
   token: string
 }
