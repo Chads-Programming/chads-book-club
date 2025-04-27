@@ -13,7 +13,7 @@ bookRouter.get("/search", zValidator("query", bookSearchQueryDto), async (c) => 
   return c.json({
     message: "Books Found",
     data: books.docs,
-    totalCount: books.numFound
+    totalCount: books.numFound,
   })
 })
 

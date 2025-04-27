@@ -8,7 +8,7 @@ export const submitBook = async (book: BookSubmitDto, userId: string) => {
       bookId: book.id,
     },
   })
-  
+
   if (foundSubmission) throw new Error("Book already submitted")
 
   const foundBook = await getBookDetails(book.id)
