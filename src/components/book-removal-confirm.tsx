@@ -28,7 +28,9 @@ export default function BookRemovalConfirm({ handleConfirm }: BookRemovalConfirm
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer"  onClick={() => handleConfirm()}>Eliminar</AlertDialogAction>
+          <AlertDialogAction className="cursor-pointer" onClick={() => handleConfirm()}>
+            Eliminar
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

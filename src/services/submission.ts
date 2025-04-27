@@ -1,6 +1,11 @@
-import { BookVoteAction } from "@/api/types/book-vote.type"
+import type { BookVoteAction } from "@/api/types/book-vote.type"
 import { kirbapi } from "./kirbapi"
-import { BookSubmission, BookSubmissionResponse, BookSubmitResponse, BookVoteResponse } from "@/types/submission-service.type"
+import type {
+  BookSubmission,
+  BookSubmissionResponse,
+  BookSubmitResponse,
+  BookVoteResponse,
+} from "@/types/submission-service.type"
 
 export const SubmissionService = {
   submitBook: async (id: string) => {

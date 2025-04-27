@@ -59,15 +59,7 @@
     "typescript": "^5"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp",
-      "sqlite3"
-    ],
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp",
-      "sqlite3"
-    ]
+    "ignoredBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"],
+    "onlyBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"]
   }
 }

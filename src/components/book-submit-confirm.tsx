@@ -30,7 +30,9 @@ export default function BookSubmitConfirm({ handleConfirm }: BookSubmitConfirmPr
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer" onClick={() => handleConfirm()}>Agregar</AlertDialogAction>
+          <AlertDialogAction className="cursor-pointer" onClick={() => handleConfirm()}>
+            Agregar
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

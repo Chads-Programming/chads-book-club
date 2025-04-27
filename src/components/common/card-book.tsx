@@ -1,7 +1,6 @@
 "use client"
 
 import Image, { type StaticImageData } from "next/image"
-import { FaPlus } from "react-icons/fa6"
 
 import { Rating } from "./rating"
 import { Heading } from "./heading"
@@ -41,7 +40,6 @@ export function CardBook({ title, srcImage, stars, authors, id }: CardBookProps)
         />
 
         <BookSubmitConfirm handleConfirm={handleSubmit} />
-
       </div>
       <Heading size="xs" className="mt-2">
         {title}

@@ -1,4 +1,4 @@
-import type { BookSubmission, Prisma } from "@prisma/client"
+import type { Prisma } from "@prisma/client"
 import prisma from "../db/prisma"
 import type { BookSubmitDto } from "../dtos/book-submit.dto"
 import { getBookDetails } from "./book.service"
@@ -115,7 +115,7 @@ export const deleteSubmission = async (submissionId: string, userId: string) => 
   return await prisma.bookSubmission.deleteMany({
     where: {
       id: submissionId,
-      userId
+      userId,
     },
   })
 }
