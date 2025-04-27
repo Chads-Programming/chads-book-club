@@ -1,5 +1,6 @@
 "use client"
 
+import type { OpenLibraryBook } from "@/api/types/open-library-book.type"
 import { UserService } from "@/services/user"
 import { createContext, useReducer } from "react"
 
@@ -9,7 +10,15 @@ const initialState = {
 
 type State = typeof initialState
 
-type Action = { type: "SET_USER_REGISTERED"; payload: boolean } | { type: "LOGOUT" } | { type: "UNKNOWN" }
+type BookPayload = {
+  books: OpenLibraryBook[]
+  totalCount: number
+}
+
+type Action =
+  | { type: "SET_USER_REGISTERED"; payload: boolean }
+  | { type: "LOGOUT" }
+  | { type: "SET_BOOKS"; payload: BookPayload }
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -18,13 +27,18 @@ const reducer = (state: State, action: Action) => {
         ...state,
         userRegistered: action.payload,
       }
+    case "SET_BOOKS":
+      return {
+        ...state,
+        books: action.payload,
+      }
     case "LOGOUT":
       return {
         ...state,
         userRegistered: false,
       }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
+      return state
     }
   }
 }

@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { KirbContextProvider } from "@/context"
-import { cookies } from "next/headers"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

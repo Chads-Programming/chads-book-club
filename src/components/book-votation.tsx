@@ -22,11 +22,11 @@ export const BookVotation = () => {
 
       <div className="w-full flex justify-between items-start gap-10">
         <section>
-          <Heading as="h2">Libros más votados</Heading>
+          <Heading>Libros más votados</Heading>
         </section>
 
         <section>
-          <Heading as="h2">Tus votos</Heading>
+          <Heading>Tus votos</Heading>
         </section>
       </div>
     </section>
