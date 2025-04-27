@@ -6,10 +6,12 @@ meta {
 
 post {
   url: http://localhost:3000/api/books/submit-book
-  body: none
+  body: json
   auth: none
 }
 
-headers {
-  Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbTl5dzNoMXkwMDAwOXkwbGw5MTk4c2h0IiwiZXhwIjoxNzQ1NzE5NjkzfQ.FKW-DFkMUD5gZJ17qPe9EDCjOe_OXz4BMdhhSwCF7bo; HttpOnly; Path=/;
+body:json {
+  {
+    "bookId": "1234"
+  }
 }

@@ -9,7 +9,5 @@ export const userMiddleware = (c: Context, next: Next) => {
     cookie: 'token',
     alg: 'HS256',
   })
-  const user = c.get('jwtPayload')
-  console.log({user})
   return jwtMiddleware(c, next)
 }
