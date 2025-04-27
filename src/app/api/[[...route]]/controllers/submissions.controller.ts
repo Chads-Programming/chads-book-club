@@ -2,30 +2,19 @@ import { createRouter } from "@/api/utils/create-router"
 import { userMiddleware } from "../middlewares/user.middleware"
 import { zValidator } from "@hono/zod-validator"
 import { bookSubmitDto } from "../dtos/book-submit.dto"
-import prisma from "../db/prisma"
 import type { UserPayload } from "../types/user-payload.type"
-import { submitBook } from "../services/submission.service"
+import { findSubmissionsWithVotes, submitBook } from "../services/submission.service"
 
 export const submissionsRouter = createRouter()
 
 submissionsRouter.use("/*", userMiddleware)
 
 submissionsRouter.get("/", async (c) => {
-  const submissions = await prisma.bookSubmission.findMany({
-    include: {
-      _count: {
-        select: {
-          votes: true,
-        },
-      },
-    },
-  })
+  const submissions = await findSubmissionsWithVotes()
+
   return c.json({
     message: "Submissions Found",
-    data: submissions.map((submission) => {
-      const { _count, ...rest } = submission
-      return { ...rest, votes: submission?._count?.votes || 0 }
-    }),
+    data: submissions,
   })
 })
 

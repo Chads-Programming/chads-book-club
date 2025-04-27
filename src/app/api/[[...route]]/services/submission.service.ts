@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import prisma from "../db/prisma"
 import type { BookSubmitDto } from "../dtos/book-submit.dto"
 import { getBookDetails } from "./book.service"
@@ -33,4 +34,33 @@ export const submitBook = async (book: BookSubmitDto, userId: string) => {
   })
 
   return submission
+}
+
+export const findSubmissionsWithVotes = async (where?: Prisma.BookSubmissionWhereInput) => {
+  const submissionsRaw = await prisma.bookSubmission.findMany({
+    where,
+    include: {
+      _count: {
+        select: {
+          votes: true,
+        },
+      },
+      votes: {
+        include: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  const submissions = submissionsRaw.map((submission) => {
+    const { _count, ...rest } = submission
+    return { ...rest, votes: submission?._count?.votes || 0 }
+  })
+
+  return submissions
 }
