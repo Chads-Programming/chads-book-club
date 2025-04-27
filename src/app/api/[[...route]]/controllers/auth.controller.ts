@@ -20,7 +20,7 @@ authRouter.post("/login", zValidator("json", loginDto), async (c) => {
     },
     secret,
   )
-  
+
   c.header("Set-Cookie", `token=${token}; HttpOnly; Path=/;`)
 
   return c.json({
