@@ -1,21 +1,27 @@
 "use client"
 import { createContext, useContext, useReducer } from "react"
-import type { OpenLibraryBook } from "@/api/types/open-library-book.type"
+import type { Book } from "@/api/types/book.type"
 
 interface KirbContextType {
   state: State
   clearSession: () => void
   createSession: () => void
+  setBooks: (payload: BookPayload) => void
+  clearBooks: () => void
 }
 
 const initialState = {
   userRegistered: false,
+  books: {
+    books: [],
+    totalCount: 0,
+  } as BookPayload,
 }
 
 type State = typeof initialState
 
 type BookPayload = {
-  books: OpenLibraryBook[]
+  books: Book[]
   totalCount: number
 }
 
@@ -23,6 +29,7 @@ type Action =
   | { type: "SET_USER_REGISTERED"; payload: boolean }
   | { type: "LOGOUT" }
   | { type: "SET_BOOKS"; payload: BookPayload }
+  | { type: "CLEAR_BOOKS" }
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -40,6 +47,14 @@ const reducer = (state: State, action: Action) => {
       return {
         ...state,
         userRegistered: false,
+      }
+    case "CLEAR_BOOKS":
+      return {
+        ...state,
+        books: {
+          books: [],
+          totalCount: 0,
+        },
       }
     default: {
       return state
@@ -64,8 +79,18 @@ export const KirbContextProvider = ({
     dispatch({ type: "SET_USER_REGISTERED", payload: true })
   }
 
+  const setBooks = (payload: BookPayload) => {
+    dispatch({ type: "SET_BOOKS", payload })
+  }
+
+  const clearBooks = () => {
+    dispatch({ type: "CLEAR_BOOKS" })
+  }
+
   return (
-    <KirbContext.Provider value={{ state, clearSession, createSession }}>{children}</KirbContext.Provider>
+    <KirbContext.Provider value={{ state, clearSession, createSession, setBooks, clearBooks}}>
+      {children}
+    </KirbContext.Provider>
   )
 }
 

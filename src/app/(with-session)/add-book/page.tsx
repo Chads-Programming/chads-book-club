@@ -12,24 +12,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui"
-import { KirbContext } from "@/context/kirbe-store"
+import { useBooks } from "@/context/book-context"
+import { useDebounceCallback } from "@/hooks/use-debouce.hook"
 import { BookService } from "@/services/book"
-import { useContext, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function AddBookPage() {
-  const { dispatch } = useContext(KirbContext)
+  const [search, setSearch] = useState("")
+  const { state, setBooks, clearBooks } = useBooks()
+  const debounceCallback = useDebounceCallback(1000)
+  
+  const onSearch = async (search: string) => {
+    const res = await BookService.getBooksByQuery(search)
+    if (!res) return
+
+    const data = { books: res.data, totalCount: res.totalCount }
+
+    setBooks(data)
+  }
 
   useEffect(() => {
-    const getBooks = async () => {
-      const res = await BookService.getBooksByQuery("harry potter")
-      if (!res) return
-
-      const book = { books: res.books, totalCount: res.totalCount }
-
-      dispatch({ type: "SET_BOOKS", payload: book })
-    }
-    getBooks()
-  }, [dispatch])
+    if (!search.length) return clearBooks()
+    debounceCallback(() => onSearch(search))
+  }, [search])
 
   return (
     <section className="flex flex-col gap-10 items-center">
@@ -49,10 +54,14 @@ export default function AddBookPage() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Input placeholder="Busca un libro" />
+        <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Busca un libro" />
       </div>
 
-      <CardBook srcImage="https://placehold.co/400x300" title="Libro" stars={3} />
+      <div className="flex flex-wrap gap-4 mx-auto justify-center">
+        {state.books.books.map((book) => (
+          <CardBook key={book.key} srcImage={book.coverUrl} title={book.title} stars={book.rating} />
+        ))}
+      </div>
     </section>
   )
 }

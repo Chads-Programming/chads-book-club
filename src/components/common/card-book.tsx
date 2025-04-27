@@ -3,8 +3,8 @@
 import Image, { type StaticImageData } from "next/image"
 import { FaPlus } from "react-icons/fa6"
 
-import { useState } from "react"
 import { Rating } from "./rating"
+import { Heading } from "./heading"
 interface CardBookProps {
   title: string
   srcImage: string | StaticImageData
@@ -12,21 +12,16 @@ interface CardBookProps {
 }
 
 export function CardBook({ title, srcImage, stars }: CardBookProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const handleMouseEnter = () => setIsHovered(true)
-  const handleMouseLeave = () => setIsHovered(false)
 
   return (
-    <article className="w-full max-w-[200px]" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <article className="w-full max-w-[200px] flex flex-col gap-1">
       <div className="relative max-h-[250px] rounded-lg overflow-hidden cursor-pointer">
         <Image
           src={srcImage}
           alt={title}
           width={400}
           height={300}
-          className={`object-cover w-full h-full transition-opacity duration-200 ${
-            isHovered ? "opacity-10" : "opacity-100"
-          }`}
+          className={"object-cover w-full h-full transition-opacity duration-200 opacity-100 hover:opacity-75"}
         />
 
         <button
@@ -35,10 +30,8 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
           <FaPlus />
         </button>
       </div>
-      <h3 className="mt-2">{title}</h3>
-      <div className=" flex">
-        <Rating stars={stars} />
-      </div>
+      <Heading size="xs" className="mt-2">{title}</Heading>
+      <Rating stars={stars} />
     </article>
   )
 }

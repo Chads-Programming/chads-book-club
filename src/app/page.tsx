@@ -13,9 +13,8 @@ export default function Home() {
   const { login } = useAuth()
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!username) {
       setErrorMessage("Debes ingresar un nombre de usuario")
       return
@@ -57,9 +56,10 @@ export default function Home() {
           />
           <PiArrowCircleRightFill
             size={32}
-            className="absolute top-2/4 right-2 -translate-y-2/4"
+            className="absolute top-2/4 right-2 -translate-y-2/4 cursor-pointer hover:opacity-75"
             role="button"
-            type="submit"
+            type="button"
+            onClick={(e) => handleSubmit(e)}
           />
         </div>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}

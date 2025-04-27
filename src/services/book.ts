@@ -1,16 +1,16 @@
-import type { OpenLibraryBook } from "@/api/types/open-library-book.type"
 import { kirbapi } from "./kirbapi"
+import { Book } from "@/api/types/book.type"
 
-export type OpenLibraryBookSearchResponse = {
+export type BookSearchResponse = {
   message: string
-  books: OpenLibraryBook[]
+  data: Book[]
   totalCount: number
 }
 
 export const BookService = {
   getBooksByQuery: async (query: string) => {
     try {
-      const data = await kirbapi.get<OpenLibraryBookSearchResponse>(`books/search?query=${query}`)
+      const data = await kirbapi.get<BookSearchResponse>(`books/search?query=${query}`)
       return data
     } catch (e: unknown) {
       if (e instanceof Error) {
