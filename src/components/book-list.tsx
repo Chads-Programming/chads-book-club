@@ -1,13 +1,12 @@
-import { OpenLibraryBook } from "@/api/types/open-library-book.type";
-import React from "react";
+import type { OpenLibraryBook } from "@/api/types/open-library-book.type"
 
 interface BookListProps {
-  books: OpenLibraryBook[];
-  onBookClick: (book: OpenLibraryBook) => void;
+  books: OpenLibraryBook[]
+  onBookClick: (book: OpenLibraryBook) => void
 }
 
 interface BookListItemProps {
-  book: OpenLibraryBook;
+  book: OpenLibraryBook
 }
 
 const BookListItem = ({ book }: BookListItemProps) => {
@@ -19,17 +18,17 @@ const BookListItem = ({ book }: BookListItemProps) => {
       </header>
       <div>♥️♥️♥️♥️♥️</div>
     </article>
-  );
-};
+  )
+}
 
 export const BookList = ({ books, onBookClick }: BookListProps) => {
   return (
     <ul>
       {books.map((book) => (
-        <li key={book.key} onClick={() => onBookClick(book)}>
+        <li onKeyUp={() => onBookClick(book)}  key={book.key} onClick={() => onBookClick(book)}>
           <BookListItem book={book} />
         </li>
       ))}
     </ul>
-  );
-};
+  )
+}

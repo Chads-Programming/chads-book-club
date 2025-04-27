@@ -4,7 +4,7 @@ import Image, { type StaticImageData } from "next/image"
 import { FaPlus } from "react-icons/fa6"
 
 import { useState } from "react"
-import { RenderStars } from "../RenderStars"
+import { Rating } from "./rating"
 interface CardBookProps {
   title: string
   srcImage: string | StaticImageData
@@ -37,7 +37,7 @@ export function CardBook({ title, srcImage, stars }: CardBookProps) {
       </div>
       <h3 className="mt-2">{title}</h3>
       <div className=" flex">
-        <RenderStars count={stars} />
+        <Rating stars={stars} />
       </div>
     </article>
   )

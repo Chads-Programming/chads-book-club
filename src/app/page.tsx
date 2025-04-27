@@ -1,7 +1,7 @@
 "use client"
 import { Input } from "@/components/ui"
 import { useAuth } from "@/context/auth-context"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { PiArrowCircleRightFill } from "react-icons/pi"
 
@@ -12,7 +12,6 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { login } = useAuth()
   const router = useRouter()
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -28,15 +27,18 @@ export default function Home() {
 
     setErrorMessage(null)
 
-    login({ username }, {
-      onSuccess: () => {
-        router.replace('/lobby')
+    login(
+      { username },
+      {
+        onSuccess: () => {
+          router.replace("/lobby")
+        },
+        onError: (error) => {
+          setErrorMessage("Hubo un error al registrar el usuario")
+          console.error(error)
+        },
       },
-      onError: (error) => {
-        setErrorMessage("Hubo un error al registrar el usuario")
-        console.error(error)
-      }
-    })  
+    )
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
