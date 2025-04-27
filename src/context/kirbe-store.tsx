@@ -6,7 +6,7 @@ import type { OpenLibraryBook } from "@/api/types/open-library-book.type";
 
 interface KirbContextType {
   state: State;
-  logout: () => Promise<void>;
+  clearSession: () => void;
   createSession: () => void;
 }
 
@@ -58,8 +58,7 @@ export const KirbContextProvider = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const logout = async () => {
-    await UserService.logout();
+  const clearSession = async () => {
     dispatch({ type: "LOGOUT" });
   };
 
@@ -68,7 +67,7 @@ export const KirbContextProvider = ({
   };
 
   return (
-    <KirbContext.Provider value={{ state, logout, createSession }}>
+    <KirbContext.Provider value={{ state, clearSession, createSession }}>
       {children}
     </KirbContext.Provider>
   );

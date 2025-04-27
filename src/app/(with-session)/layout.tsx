@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui";
-import { useKirbe } from "@/context";
+import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
-  const { logout } = useKirbe();
+  const { logout } = useAuth();
 
   return (
     <section className="flex flex-col gap-10 items-start">

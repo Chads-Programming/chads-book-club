@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { KirbContextProvider } from "@/context";
+import { KirbContextProvider } from "@/context/kirbe-store";
 import { cookies } from "next/headers";
 import { AuthProvider } from "@/context/auth-context";
 

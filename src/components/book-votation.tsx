@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { Heading } from "./common"
 import { Button } from "./ui"
-import { KirbContext } from "@/context"
+import { KirbContext } from "@/context/kirbe-store"
 import Link from "next/link"
 
 export const BookVotation = () => {

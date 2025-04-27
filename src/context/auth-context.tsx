@@ -1,14 +1,13 @@
 "use client";
 import { UserRegisterResponse, UserService } from "@/services/user";
 import React, { createContext } from "react";
-import { useKirbe } from ".";
-import { on } from "events";
+import { useRouter } from "next/navigation";
+import { useKirbe } from "./kirbe-store";
 
 type Options = {
   onSuccess: (user: UserRegisterResponse) => void;
   onError: (error: unknown) => void;
-}
-
+};
 
 type AuthContextType = {
   login: (data: SubmitProps, options: Options) => void;
@@ -22,22 +21,31 @@ interface SubmitProps {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { createSession } = useKirbe();
-  
-  const login = ({ username }: SubmitProps, {onSuccess, onError}: Options) => {
+  const { createSession, clearSession } = useKirbe();
+  const router = useRouter();
+
+  const login = (
+    { username }: SubmitProps,
+    { onSuccess, onError }: Options
+  ) => {
     UserService.loginOrRegister(username)
-    .then((user) => {
+      .then((user) => {
         createSession();
         onSuccess(user as UserRegisterResponse);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error(error);
-        onError(error)
-    });
+        onError(error);
+      });
   };
 
-  const logout = async () => {
-    await UserService.logout();
+  const logout = () => {
+    UserService.logout()
+      .catch((error) => console.error(error))
+      .finally(() => {
+        clearSession();
+        router.replace("/");
+      });
   };
 
   return (

@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui"
-import { KirbContext } from "@/context"
+import { KirbContext } from "@/context/kirbe-store"
 import { BookService } from "@/services/book"
 import { useContext, useEffect } from "react"
 
