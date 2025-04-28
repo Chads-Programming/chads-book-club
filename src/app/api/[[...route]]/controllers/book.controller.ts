@@ -6,6 +6,8 @@ import type { Book } from "../types/book.type"
 
 export const bookRouter = createRouter()
 
+const FALLBACK_IMAGE = "https://dummyimage.com/500x600/ccc/fff&text=Sin%20imagen"
+
 bookRouter.get("/search", zValidator("query", bookSearchQueryDto), async (c) => {
   const searchParams = c.req.valid("query")
 
@@ -14,7 +16,7 @@ bookRouter.get("/search", zValidator("query", bookSearchQueryDto), async (c) => 
   const books: Book[] = rawBooks.docs.map((book) => ({
     key: book.key,
     title: book.title,
-    coverUrl: `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`,
+    coverUrl: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : FALLBACK_IMAGE,
     authors: book.author_name,
     publishYear: book.first_publish_year,
     rating: book.ratings_average,
