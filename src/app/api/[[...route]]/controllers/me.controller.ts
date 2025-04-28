@@ -20,9 +20,7 @@ meRouter.get("/submissions", async (c) => {
   const user: UserPayload = c.get("jwtPayload")
   const userId = user.sub
 
-  const submissions = await findSubmissionsWithVotes({
-    userId,
-  })
+  const submissions = await findSubmissionsWithVotes({}, userId)
 
   return c.json({
     message: "ok",
