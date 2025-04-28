@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useReducer } from "react"
+import { createContext, useCallback, useContext, useReducer } from "react"
 import type { Book } from "@/api/types/book.type"
 
 interface KirbContextType {
@@ -79,13 +79,13 @@ export const KirbContextProvider = ({
     dispatch({ type: "SET_USER_REGISTERED", payload: true })
   }
 
-  const setBooks = (payload: BookPayload) => {
+  const setBooks = useCallback((payload: BookPayload) => {
     dispatch({ type: "SET_BOOKS", payload })
-  }
+  }, [])
 
-  const clearBooks = () => {
+  const clearBooks = useCallback(() => {
     dispatch({ type: "CLEAR_BOOKS" })
-  }
+  }, [])
 
   return (
     <KirbContext.Provider value={{ state, clearSession, createSession, setBooks, clearBooks }}>

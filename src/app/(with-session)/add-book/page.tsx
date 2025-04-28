@@ -7,7 +7,7 @@ import { useBooks } from "@/context/book-context"
 import { useDebounceCallback } from "@/hooks/use-debouce.hook"
 import { BookService } from "@/services/book"
 import { Loader2 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export default function AddBookPage() {
   const [search, setSearch] = useState("")
@@ -15,26 +15,29 @@ export default function AddBookPage() {
   const { state, setBooks, clearBooks } = useBooks()
   const debounceCallback = useDebounceCallback(1000)
 
-  const onSearch = async (search: string) => {
-    try {
-      setIsLoading(true)
-      const res = await BookService.getBooksByQuery(search)
-      if (!res) return
+  const onSearch = useCallback(
+    async (search: string) => {
+      try {
+        setIsLoading(true)
+        const res = await BookService.getBooksByQuery(search)
+        if (!res) return
 
-      const data = { books: res.data, totalCount: res.totalCount }
+        const data = { books: res.data, totalCount: res.totalCount }
 
-      setBooks(data)
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+        setBooks(data)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [setBooks],
+  )
 
   useEffect(() => {
     if (!search.length) return clearBooks()
     debounceCallback(() => onSearch(search))
-  }, [search])
+  }, [search, clearBooks, debounceCallback, onSearch])
 
   return (
     <section className="w-full flex flex-col gap-10 items-center">
@@ -50,7 +53,7 @@ export default function AddBookPage() {
       {isLoading ? (
         <Loader2 size={34} className="animate-spin mt-12" />
       ) : (
-        <div className="flex flex-wrap gap-4 mx-auto justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start gap-4">
           {state.books.books.map((book) => (
             <CardBook
               key={book.key}
