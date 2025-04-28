@@ -41,6 +41,8 @@ model BookSubmission {
   coverUrl String?
   title    String
   authors  String[]
+  rating   Float
+  description String
   votes    SubmissionVote[]
 }
 

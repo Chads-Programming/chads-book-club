@@ -26,6 +26,8 @@ export const submitBook = async (book: BookSubmitDto, userId: string) => {
         : null,
       title: foundBook.title,
       authors: foundBook.authors,
+      rating: foundBook.rating || 0,
+      description: foundBook.description || '',
       votes: {
         create: {
           userId,
