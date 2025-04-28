@@ -1,8 +1,9 @@
 import { BookVoteAction } from "@/api/types/book-vote.type"
-import { cn } from "@/lib/utils"
 import type { BookSubmission } from "@/types/submission-service.type"
-import { Heart } from "lucide-react"
+// import { Heart } from "lucide-react"
 import BookRemovalConfirm from "./book-removal-confirm"
+import { CardBook } from "./common/card-book"
+import { useState } from "react"
 
 interface SubmissionItemProps {
   submission: BookSubmission
@@ -11,21 +12,28 @@ interface SubmissionItemProps {
 }
 
 export const SubmissionItem = ({ handleVote, submission, handleDelete }: SubmissionItemProps) => {
+  const [liked, setLiked] = useState(submission.isVotedByMe)
+
+  const vote = () => {
+    handleVote(submission.id, submission.isVotedByMe ? BookVoteAction.DISLIKE : BookVoteAction.LIKE)
+    setLiked(submission.isVotedByMe)
+  }
+
   return (
-    <div key={submission.id} className="flex justify-between items-center gap-4">
-      <p>{submission.title}</p>
+    <li key={submission.id} className="flex justify-between items-center gap-4">
       <div className="flex items-center gap-2">
-        <Heart
-          className={cn("cursor-pointer", submission.isVotedByMe && "fill-[#d53a3a]")}
-          size={20}
-          color="#d53a3a"
-          onClick={() =>
-            handleVote(submission.id, submission.isVotedByMe ? BookVoteAction.DISLIKE : BookVoteAction.LIKE)
-          }
+        <CardBook
+          small
+          title={submission.title}
+          authors={submission.authors}
+          id={submission.id}
+          srcImage={submission.coverUrl}
+          votations={submission.votes}
+          handleActionTrigger={vote}
+          liked={liked}
         />
-        <p>{submission.votes}</p>
         {submission.createdByMe && <BookRemovalConfirm handleConfirm={() => handleDelete(submission.id)} />}
       </div>
-    </div>
+    </li>
   )
 }
