@@ -1,5 +1,4 @@
 "use client"
-import { Input } from "@/components/ui"
 import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -46,7 +45,9 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-2 min-h-screen">
-      <form className="flex flex-col justify-center items-center  gap-2 w-full max-w-xs" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col justify-center items-center  gap-2 w-full max-w-xs"
+        onSubmit={handleSubmit}>
         <h2>Login</h2>
         <div className=" justify-center w-full p-8 relative flex items-center justify-between gap-2 h-12 border border-border rounded-lg">
           <a href="/api/auth/login/discord">

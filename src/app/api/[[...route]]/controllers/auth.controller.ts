@@ -10,7 +10,7 @@ const providerMiddleware = zValidator("param", authProviderSchemaDto)
 
 authRouter.get("/login/:provider", providerMiddleware, async (c) => {
   const { provider } = c.req.valid("param")
-  
+
   if (provider === Provider.discord) {
     const providerInstance = new DiscordProvider()
     const loginUrl = providerInstance.getLoginUrl()

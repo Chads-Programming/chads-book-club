@@ -1,5 +1,5 @@
-import { Provider, User } from "@prisma/client"
-import { AuthProvider, UserCreationData } from "../types/auth-provider"
+import { Provider, type User } from "@prisma/client"
+import { AuthProvider, type UserCreationData } from "../types/auth-provider"
 import { env } from "../utils/env"
 
 interface DiscordUserData {
@@ -55,7 +55,7 @@ export class DiscordProvider extends AuthProvider {
 
   getLoginUrl(): string {
     const url = new URL("https://discord.com/oauth2/authorize")
-    
+
     url.searchParams.set("scope", "email identify")
     url.searchParams.set("response_type", "code")
     url.searchParams.set("client_id", env.DISCORD_CLIENT_ID)

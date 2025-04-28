@@ -1,4 +1,4 @@
-import { Provider, User } from "@prisma/client"
+import { Provider, type User } from "@prisma/client"
 import prisma from "../db/prisma"
 import { signJwt } from "../utils/jwt"
 import { env } from "../utils/env"
