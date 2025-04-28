@@ -3,7 +3,7 @@ import { Input } from "@/components/ui"
 import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { PiArrowCircleRightFill } from "react-icons/pi"
+import { PiDiscordLogoBold } from "react-icons/pi"
 
 const MIN_USERNAME_LENGTH = 3 as const
 
@@ -46,21 +46,12 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-2 min-h-screen">
-      <form className="flex flex-col items-start gap-2 w-full max-w-xs" onSubmit={handleSubmit}>
-        <h2>¿Quién sos pibe?</h2>
-        <div className="w-full relative flex items-center justify-between gap-2 h-12 border border-border rounded-lg">
-          <Input
-            className="w-full h-full bg-transparent border-none rounded-lg shadow-none pl-4 pr-12"
-            value={username}
-            onChange={handleChange}
-          />
-          <PiArrowCircleRightFill
-            size={32}
-            className="absolute top-2/4 right-2 -translate-y-2/4 cursor-pointer hover:opacity-75"
-            role="button"
-            type="button"
-            onClick={(e) => handleSubmit(e)}
-          />
+      <form className="flex flex-col justify-center items-center  gap-2 w-full max-w-xs" onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <div className=" justify-center w-full p-8 relative flex items-center justify-between gap-2 h-12 border border-border rounded-lg">
+          <a href="/api/auth/login/discord">
+            <PiDiscordLogoBold size={32} />
+          </a>
         </div>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </form>

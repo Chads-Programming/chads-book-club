@@ -1,33 +1,28 @@
 import { createRouter } from "@/api/utils/create-router"
-import { signJwt } from "@/api/utils/jwt"
-import { env } from "@/api/utils/env"
 import { zValidator } from "@hono/zod-validator"
-import { loginDto } from "../dtos/auth-login.dto"
-import { getOrCreateUser } from "../services/login.service"
 import { deleteCookie } from "hono/cookie"
+import { authProviderSchemaDto } from "../dtos/auth-provider.dto"
+import { Provider } from "@prisma/client"
+import { DiscordProvider } from "../providers/discord.provider"
 
 export const authRouter = createRouter()
+const providerMiddleware = zValidator("param", authProviderSchemaDto)
 
-authRouter.post("/login", zValidator("json", loginDto), async (c) => {
-  const secret = env.JWT_SECRET
+authRouter.get("/login/:provider", providerMiddleware, async (c) => {
+  const { provider } = c.req.valid("param")
+  
+  if (provider === Provider.discord) {
+    const providerInstance = new DiscordProvider()
+    const loginUrl = providerInstance.getLoginUrl()
+    return c.redirect(loginUrl)
+  }
 
-  const { username } = c.req.valid("json")
-
-  const user = await getOrCreateUser(username)
-
-  const token = await signJwt(
+  return c.json(
     {
-      sub: user.id,
+      message: "Provider not found",
     },
-    secret,
+    404,
   )
-
-  c.header("Set-Cookie", `token=${token}; HttpOnly; Path=/;`)
-
-  return c.json({
-    message: "Logged in!",
-    token,
-  })
 })
 
 authRouter.delete("/logout", async (c) => {
@@ -35,5 +30,33 @@ authRouter.delete("/logout", async (c) => {
 
   return c.json({
     message: "Logged out!",
+  })
+})
+
+authRouter.get("/redirect/:provider", providerMiddleware, async (c) => {
+  const { provider } = c.req.valid("param")
+
+  if (provider === Provider.discord) {
+    const code = c.req.query("code")
+    if (!code)
+      return c.json(
+        {
+          message: "No code provided",
+        },
+        400,
+      )
+    const discordProvider = new DiscordProvider()
+
+    const user = await discordProvider.login(code)
+
+    const token = await discordProvider.getJwtToken(user)
+
+    c.header("Set-Cookie", `token=${token}; HttpOnly; Path=/;`)
+
+    return c.redirect("/lobby")
+  }
+
+  return c.json({
+    message: "Redirecting to provider!",
   })
 })

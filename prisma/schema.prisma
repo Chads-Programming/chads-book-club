@@ -10,9 +10,27 @@ datasource db {
 
 model User {
   id              String           @id @default(cuid())
-  username        String           @unique
+  username        String
+  email           String?          @unique
+  avatarUrl       String?
+  accounts        Account[]
   bookSubmissions BookSubmission[]
   submissionVotes SubmissionVote[]
+}
+
+enum Provider {
+  discord
+}
+
+model Account {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  provider       Provider
+  providerUserId String
+  createdAt      DateTime @default(now())
+
+  @@unique([provider, providerUserId])
 }
 
 model BookSubmission {
@@ -32,6 +50,6 @@ model SubmissionVote {
   bookSubmission   BookSubmission @relation(fields: [bookSubmissionId], references: [id], onDelete: Cascade)
   userId           String
   user             User           @relation(fields: [userId], references: [id])
-  
+
   @@index([userId, bookSubmissionId])
 }
