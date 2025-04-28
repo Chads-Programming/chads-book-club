@@ -1,8 +1,11 @@
 "use client"
+import { Heading } from "@/components/common"
+import { Button } from "@/components/ui"
 import { useAuth } from "@/context/auth-context"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { PiDiscordLogoBold } from "react-icons/pi"
+import { FaDiscord } from "react-icons/fa"
 
 const MIN_USERNAME_LENGTH = 3 as const
 
@@ -39,21 +42,18 @@ export default function Home() {
     )
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value)
-  }
-
   return (
     <section className="flex flex-col items-center justify-center gap-2 min-h-screen">
       <form
         className="flex flex-col justify-center items-center  gap-2 w-full max-w-xs"
         onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <div className=" justify-center w-full p-8 relative flex items-center justify-between gap-2 h-12 border border-border rounded-lg">
-          <a href="/api/auth/login/discord">
-            <PiDiscordLogoBold size={32} />
-          </a>
-        </div>
+        <Heading>Entrá a tu cuenta</Heading>
+        <Button asChild className="w-full h-auto p-5">
+          <Link href="/api/auth/login/discord" shallow={true}>
+            <span className="sr-only">Iniciar sesión</span>
+            <FaDiscord className="size-8" aria-label="Icono de Discord" />
+          </Link>
+        </Button>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </form>
     </section>
