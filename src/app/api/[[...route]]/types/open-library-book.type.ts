@@ -30,7 +30,10 @@ export interface OpenLibraryBookGetResponse {
   excerpts: Array<{
     excerpt: string
   }>
-  description: string
+  description: {
+    type: string
+    value: string
+  }
   links: Array<{
     title: string
     url: string
