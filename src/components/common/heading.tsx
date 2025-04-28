@@ -9,7 +9,7 @@ interface HeadingProps
   as?: HeadingTag
 }
 
-export const headingVariants = cva("text-foreground", {
+export const headingVariants = cva("font-medium text-foreground", {
   variants: {
     variant: {
       default: "text-foreground",
