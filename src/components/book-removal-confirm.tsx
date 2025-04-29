@@ -9,17 +9,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { cn } from "@/lib/utils"
 import { TrashIcon } from "lucide-react"
+import { Button } from "./ui"
 
-interface BookRemovalConfirmProps {
+interface BookRemovalConfirmProps extends React.ComponentProps<typeof AlertDialogTrigger> {
   handleConfirm: () => void
 }
 
-export default function BookRemovalConfirm({ handleConfirm }: BookRemovalConfirmProps) {
+export default function BookRemovalConfirm({ handleConfirm, className, ...props }: BookRemovalConfirmProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="cursor-pointer" type="button">
-        <TrashIcon color="#d53a3a" size={20} />
+      <AlertDialogTrigger asChild className={cn("cursor-pointer", className)} {...props}>
+        <Button variant="destructive">
+          <TrashIcon color="#fff" size={20} />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

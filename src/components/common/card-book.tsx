@@ -24,7 +24,7 @@ type CardBookSubmitProps = {
   liked?: never
 }
 
-type CardBookProps = {
+type CardBookProps = React.ComponentProps<"article"> & {
   title: string
   srcImage: string | StaticImageData
   authors: string[]
@@ -43,6 +43,8 @@ export function CardBook({
   liked,
   small,
   id,
+  className,
+  ...props
 }: CardBookProps) {
   const submitBook = async () => {
     toast.promise(SubmissionService.submitBook(id), {
@@ -53,7 +55,12 @@ export function CardBook({
   }
 
   return (
-    <article className="max-w-xs w-full flex flex-col gap-1 border border-black/5 shadow-md shadow-black/5 rounded-lg overflow-hidden">
+    <article
+      className={cn(
+        "max-w-xs w-full flex flex-col gap-1 border border-black/5 shadow-md shadow-black/5 rounded-lg overflow-hidden",
+        className,
+      )}
+      {...props}>
       <div className="relative cursor-pointer">
         <Image
           src={srcImage}
@@ -67,7 +74,7 @@ export function CardBook({
         />
 
         {!!stars && <BookActionButton icon={FaPlus} handleConfirm={submitBook} />}
-        {!!votations && (
+        {handleActionTrigger && (
           <BookActionButton
             icon={FaHeart}
             handleTriggered={handleActionTrigger}
