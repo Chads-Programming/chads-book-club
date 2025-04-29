@@ -12,11 +12,12 @@ interface SubmissionItemProps {
 }
 
 export const SubmissionItem = ({ handleVote, submission, handleDelete }: SubmissionItemProps) => {
-  const [liked, setLiked] = useState(submission.isVotedByMe)
+  const alreadyVoted = submission.isVotedByMe
+  const [liked, setLiked] = useState<boolean>(alreadyVoted)
 
   const vote = () => {
-    handleVote(submission.id, submission.isVotedByMe ? BookVoteAction.DISLIKE : BookVoteAction.LIKE)
-    setLiked(submission.isVotedByMe)
+    handleVote(submission.id, alreadyVoted ? BookVoteAction.DISLIKE : BookVoteAction.LIKE)
+    setLiked(!alreadyVoted)
   }
 
   return (

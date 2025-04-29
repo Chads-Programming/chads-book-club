@@ -67,13 +67,13 @@ export function CardBook({
         />
 
         {!!stars && <BookActionButton icon={FaPlus} handleConfirm={submitBook} />}
-        {!!votations && liked ? (
+        {!!votations && (
           <BookActionButton
             icon={FaHeart}
             handleTriggered={handleActionTrigger}
             className={liked ? "text-red-500" : ""}
           />
-        ) : null}
+        )}
       </div>
 
       <section className="p-4 flex flex-col gap-2">
