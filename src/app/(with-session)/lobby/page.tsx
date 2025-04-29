@@ -1,14 +1,32 @@
 "use client"
 import { BookVoteAction } from "@/api/types/book-vote.type"
+import { Paragraph } from "@/components/common"
 import { Heading } from "@/components/common/heading"
 import { SubmissionItem } from "@/components/submission-item"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui"
 import { SubmissionService } from "@/services/submission"
 import type { BookSubmission } from "@/types/submission-service.type"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 export default function LobbyPage() {
   const [submissions, setSubmissions] = useState<BookSubmission[]>([])
+  const listClassNames = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10"
+
+  const filteredSubmissions = useMemo(() => {
+    return submissions.reduce(
+      (acc, submission) => {
+        if (submission.isVotedByMe) acc.myVotes.push(submission)
+        if (submission.createdByMe) acc.mySubmissions.push(submission)
+        return acc
+      },
+      {
+        myVotes: [] as BookSubmission[],
+        mySubmissions: [] as BookSubmission[],
+        mostVoted: [] as BookSubmission[],
+      },
+    )
+  }, [submissions])
 
   useEffect(() => {
     const fetchSubmissions = async () => {
@@ -56,36 +74,66 @@ export default function LobbyPage() {
   }
 
   return (
-    <div className="w-full flex justify-between items-start gap-10">
-      <section className="flex flex-col gap-2">
-        <Heading>Libros más votados</Heading>
-        <ul>
-          {submissions.map((submission) => (
-            <SubmissionItem
-              handleDelete={handleDelete}
-              key={submission.id}
-              submission={submission}
-              handleVote={handleVote}
-            />
-          ))}
-        </ul>
-      </section>
+    <div className="w-full flex flex-col justify-start items-center gap-10">
+      <Tabs defaultValue="most-voted" className="w-full">
+        <TabsList className="flex flex-wrap justify-start items-center w-full max-w-max mx-auto">
+          <TabsTrigger value="most-voted">Libros más votados</TabsTrigger>
+          <TabsTrigger value="my-votes">Tus votos</TabsTrigger>
+          <TabsTrigger value="my-submissions">Tus aportes</TabsTrigger>
+        </TabsList>
+        <TabsContent value="most-voted" asChild>
+          <section className="flex flex-col gap-2 w-full">
+            <Heading as="h2">Libros más votados ({submissions.length})</Heading>
+            {submissions.length === 0 && <Paragraph>No hay libros votados</Paragraph>}
+            <ul className={listClassNames}>
+              {submissions.map((submission) => (
+                <SubmissionItem
+                  handleDelete={handleDelete}
+                  key={submission.id}
+                  submission={submission}
+                  handleVote={handleVote}
+                />
+              ))}
+            </ul>
+          </section>
+        </TabsContent>
 
-      <section>
-        <Heading as="h2">Tus votos</Heading>
-        <ul className="flex flex-col gap-10">
-          {submissions
-            .filter((submission) => submission.isVotedByMe || submission.createdByMe)
-            .map((submission) => (
-              <SubmissionItem
-                handleDelete={handleDelete}
-                key={`your-vote-${submission.id}`}
-                submission={submission}
-                handleVote={handleVote}
-              />
-            ))}
-        </ul>
-      </section>
+        <TabsContent value="my-votes" asChild className="w-full">
+          <section className="w-full">
+            <Heading as="h2">Tus votos ({filteredSubmissions.myVotes.length})</Heading>
+            {filteredSubmissions.myVotes.length === 0 && <Paragraph>No has votado ningún libro</Paragraph>}
+            <ul className={listClassNames}>
+              {filteredSubmissions.myVotes.map((submission) => (
+                <SubmissionItem
+                  handleDelete={handleDelete}
+                  key={`your-vote-${submission.id}`}
+                  submission={submission}
+                  handleVote={handleVote}
+                />
+              ))}
+            </ul>
+          </section>
+        </TabsContent>
+
+        <TabsContent value="my-submissions" asChild className="w-full">
+          <section className="w-full">
+            <Heading as="h2">Tus aportes ({filteredSubmissions.mySubmissions.length})</Heading>
+            {filteredSubmissions.mySubmissions.length === 0 && (
+              <Paragraph>No has agregado ningún libro</Paragraph>
+            )}
+            <ul className={listClassNames}>
+              {filteredSubmissions.mySubmissions.map((submission) => (
+                <SubmissionItem
+                  handleDelete={handleDelete}
+                  key={`your-vote-${submission.id}`}
+                  submission={submission}
+                  handleVote={handleVote}
+                />
+              ))}
+            </ul>
+          </section>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
