@@ -21,9 +21,10 @@ export const SubmissionItem = ({ handleVote, submission, handleDelete }: Submiss
   }
 
   return (
-    <li key={submission.id} className="flex justify-between items-center gap-4">
-      <div className="flex items-center gap-2">
+    <li key={submission.id} className="flex justify-between items-start gap-4">
+      <div className="flex flex-col items-start gap-2 w-full">
         <CardBook
+          className="flex-3/4"
           small
           title={submission.title}
           authors={submission.authors}
@@ -33,7 +34,9 @@ export const SubmissionItem = ({ handleVote, submission, handleDelete }: Submiss
           handleActionTrigger={vote}
           liked={liked}
         />
-        {submission.createdByMe && <BookRemovalConfirm handleConfirm={() => handleDelete(submission.id)} />}
+        {submission.createdByMe && (
+          <BookRemovalConfirm className="flex-1/4" handleConfirm={() => handleDelete(submission.id)} />
+        )}
       </div>
     </li>
   )
