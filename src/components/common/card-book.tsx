@@ -73,14 +73,18 @@ export function CardBook({
           )}
         />
 
-        {!!stars && <BookActionButton icon={FaPlus} handleConfirm={submitBook} />}
-        {handleActionTrigger && (
-          <BookActionButton
-            icon={FaHeart}
-            handleTriggered={handleActionTrigger}
-            className={liked ? "text-red-500" : ""}
-          />
-        )}
+        <BookActionButton
+          {...(handleActionTrigger
+            ? {
+                handleTriggered: handleActionTrigger,
+                icon: FaHeart,
+                className: liked ? "text-red-500" : "",
+              }
+            : {
+                handleConfirm: submitBook,
+                icon: FaPlus,
+              })}
+        />
       </div>
 
       <section className="p-4 flex flex-col gap-2">
