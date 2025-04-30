@@ -16,6 +16,10 @@
     "migrate:rollback": "dotenv -- sequelize-cli db:migrate:undo",
     "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all"
   },
+  "engines": {
+    "node": ">=22"
+  },
+  "engineStrict": true,
   "packageManager": "pnpm@10.4.1",
   "dependencies": {
     "@hono/zod-validator": "^0.4.3",
@@ -60,15 +64,7 @@
     "typescript": "^5"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp",
-      "sqlite3"
-    ],
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp",
-      "sqlite3"
-    ]
+    "ignoredBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"],
+    "onlyBuiltDependencies": ["@biomejs/biome", "sharp", "sqlite3"]
   }
 }
