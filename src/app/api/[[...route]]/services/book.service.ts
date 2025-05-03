@@ -46,15 +46,15 @@ export const getBookDetails = async (bookId: string) => {
 
 export const getAuthor = async (authorId: string) => {
   const response = await fetch(`https://openlibrary.org/${authorId}.json`)
-  const data: OpenLibraryAuthorResponse = await response.json()
-  if ((data as any).error) return null
+  const data: OpenLibraryAuthorResponse | { error: string } = await response.json()
+  if ("error" in data) return null
 
   return data
 }
 
 export const getBookRatings = async (bookId: string) => {
   const response = await fetch(`https://openlibrary.org/works/${bookId}/ratings.json`)
-  const data: OpenLibraryBookRatingsResponse = await response.json()
-  if ((data as any).error) return null
+  const data: OpenLibraryBookRatingsResponse | { error: string } = await response.json()
+  if ("error" in data) return null
   return data.summary
 }

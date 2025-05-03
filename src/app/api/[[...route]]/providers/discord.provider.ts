@@ -10,15 +10,15 @@ interface DiscordUserData {
   public_flags: number
   flags: number
   banner: string
-  accent_color: any
+  accent_color: string
   global_name: string
   avatar_decoration_data: {
     asset: string
     sku_id: string
-    expires_at: any
+    expires_at: number
   }
-  collectibles: any
-  banner_color: any
+  collectibles: number[]
+  banner_color: string
   clan: {
     identity_guild_id: string
     identity_enabled: boolean
