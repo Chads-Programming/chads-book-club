@@ -44,9 +44,6 @@ export async function announceWeeklyWinner() {
     })
   })
 
-  if (!env.PUBLISH_WINNER_URL || !env.PUBLISH_WINNER_TOKEN)
-    throw new Error("Variables PUBLISH_WINNER_URL o TOKEN no definidas")
-
   const submitterWinnerDiscordId = winner.user.accounts.find(
     (account) => account.provider === "discord",
   )?.providerUserId
