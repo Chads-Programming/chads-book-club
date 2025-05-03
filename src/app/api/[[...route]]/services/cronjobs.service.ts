@@ -8,7 +8,9 @@ export async function announceWeeklyWinner() {
 
   const weekEnd = new Date(today)
   const weekStart = new Date(today)
-  weekStart.setDate(today.getDate() - 7)
+  const DAYS_OFFSET = 7;
+
+  weekStart.setDate(today.getDate() - DAYS_OFFSET)
 
   const submissions = await prisma.bookSubmission.findMany({
     where: { createdAt: { gte: weekStart, lt: weekEnd } },
