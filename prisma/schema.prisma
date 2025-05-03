@@ -34,16 +34,18 @@ model Account {
 }
 
 model BookSubmission {
-  id       String           @id @default(cuid())
-  userId   String
-  user     User             @relation(fields: [userId], references: [id])
-  bookId   String           @unique
-  coverUrl String?
-  title    String
-  authors  String[]
-  rating   Float
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  bookId      String           @unique
+  coverUrl    String?
+  title       String
+  authors     String[]
+  rating      Float
   description String
-  votes    SubmissionVote[]
+  votes       SubmissionVote[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
 model SubmissionVote {
@@ -54,4 +56,20 @@ model SubmissionVote {
   user             User           @relation(fields: [userId], references: [id])
 
   @@index([userId, bookSubmissionId])
+}
+
+model WeeklyBackup {
+  id        String   @id @default(cuid())
+  weekStart DateTime
+  weekEnd   DateTime
+  snapshot  Json
+  createdAt DateTime @default(now())
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  key       String   @unique @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

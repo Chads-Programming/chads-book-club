@@ -1,5 +1,6 @@
 import { authRouter } from "./controllers/auth.controller"
 import { bookRouter } from "./controllers/book.controller"
+import { cronjobsRouter } from "./controllers/cronjobs.controller"
 import { meRouter } from "./controllers/me.controller"
 import { submissionsRouter } from "./controllers/submissions.controller"
 import { createRouter } from "./utils/create-router"
@@ -22,3 +23,4 @@ app.route("/auth", authRouter)
 app.route("/me", meRouter)
 app.route("/books", bookRouter)
 app.route("/submissions", submissionsRouter)
+app.route("/cronjobs", cronjobsRouter)

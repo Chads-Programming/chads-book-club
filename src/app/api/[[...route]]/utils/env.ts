@@ -4,7 +4,9 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
-  DISCORD_REDIRECT_URI: z.string(),
+  DISCORD_REDIRECT_URI: z.string().url(),
+  PUBLISH_WINNER_URL: z.string().url(),
+  PUBLISH_WINNER_TOKEN: z.string(),
 })
 
 export const env = envSchema.parse(process.env)
