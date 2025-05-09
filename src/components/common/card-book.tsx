@@ -81,7 +81,7 @@ export function CardBook({
         className,
       )}
       {...props}>
-      <div className="relative cursor-pointer">
+      <div className="relative">
         <Image
           src={srcImage}
           alt={title}
