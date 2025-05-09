@@ -33,6 +33,9 @@ export const SubmissionItem = ({ handleVote, submission, handleDelete }: Submiss
           votations={submission.votes}
           handleActionTrigger={vote}
           liked={liked}
+          {...(submission.userId && {
+            creatorUser: submission.userId,
+          })}
         />
         {submission.createdByMe && (
           <BookRemovalConfirm className="flex-1/4" handleConfirm={() => handleDelete(submission.id)} />

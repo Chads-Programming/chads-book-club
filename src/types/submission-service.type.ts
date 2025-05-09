@@ -8,6 +8,7 @@ export type BookSubmission = {
   votes: number
   isVotedByMe: boolean
   createdByMe: boolean
+  userId?: string
 }
 export type BookSubmissionResponse = {
   message: string

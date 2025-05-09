@@ -10,6 +10,9 @@ import { toast } from "sonner"
 import { BookActionButton } from "../book-action-button"
 import { FaHeart, FaPlus } from "react-icons/fa6"
 import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { type UserResponse, UserService } from "@/services/user"
+import { DEFAULT_DISCORD_AVATAR } from "@/constants"
 
 type CardBookVoteProps = {
   stars?: never
@@ -31,6 +34,7 @@ type CardBookProps = React.ComponentProps<"article"> & {
   id: string
   handleActionTrigger?: any
   small?: boolean
+  creatorUser?: string
 } & (CardBookVoteProps | CardBookSubmitProps)
 
 export function CardBook({
@@ -43,9 +47,12 @@ export function CardBook({
   liked,
   small,
   id,
+  creatorUser,
   className,
   ...props
 }: CardBookProps) {
+  const [creator, setCreator] = useState<UserResponse>()
+
   const submitBook = async () => {
     toast.promise(SubmissionService.submitBook(id), {
       loading: "Subiendo...",
@@ -53,6 +60,19 @@ export function CardBook({
       error: (error) => error.message,
     })
   }
+
+  useEffect(() => {
+    if (!creatorUser) return
+
+    const getUser = async () => {
+      const user = (await UserService.findOne(creatorUser))?.data
+      if (!user) return
+      setCreator(user)
+    }
+    getUser()
+  }, [creatorUser])
+
+  console.log({ creator })
 
   return (
     <article
@@ -87,7 +107,7 @@ export function CardBook({
         />
       </div>
 
-      <section className="p-4 flex flex-col gap-2">
+      <section className="p-4 flex flex-col gap-4">
         <header className="flex flex-col">
           <Heading size="xs" className="mt-2">
             {title}
@@ -100,6 +120,27 @@ export function CardBook({
         </header>
 
         {stars && <Rating stars={stars} id={id} />}
+
+        {creator && (
+          <div className="flex flex-col items-start gap-1">
+            <Paragraph size="xs" as="span">
+              Subido por:{" "}
+            </Paragraph>
+
+            <div className="flex justify-start items-center gap-2">
+              {creator.avatarUrl && (
+                <img
+                  src={creator.avatarUrl.includes("null") ? DEFAULT_DISCORD_AVATAR : creator.avatarUrl}
+                  alt={creator.username}
+                  className="w-8 h-8 object-cover rounded-full"
+                />
+              )}
+              <Paragraph size="xs" as="span">
+                {creator.username}
+              </Paragraph>
+            </div>
+          </div>
+        )}
       </section>
     </article>
   )

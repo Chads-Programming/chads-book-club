@@ -48,6 +48,8 @@ export class DiscordProvider extends AuthProvider {
     return {
       username: data.username,
       email: data.email,
+      // TODO: this avatar should be updated each time the user login into their account
+      // TODO: in case the avatar does not exist, it must show a fallback image/avatar
       avatarUrl: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`,
       providerUserId: data.id,
     }
