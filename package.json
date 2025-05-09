@@ -14,7 +14,8 @@
     "migration:create": "dotenv -- sequelize-cli migration:create",
     "migrate": "dotenv -- sequelize-cli db:migrate",
     "migrate:rollback": "dotenv -- sequelize-cli db:migrate:undo",
-    "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all"
+    "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all",
+    "db:build": "prisma generate && prisma db push"
   },
   "engines": {
     "node": ">=22"
