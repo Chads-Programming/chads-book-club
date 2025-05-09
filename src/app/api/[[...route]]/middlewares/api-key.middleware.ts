@@ -1,8 +1,7 @@
 import type { Context, Next } from "hono"
-import prisma from "../db/prisma"
 
 export const apiKeyMiddleware = async (c: Context, next: Next) => {
-  const apiKey = c.req.header("x-api-key")
+  const apiKey = c.req.header("authorization")
 
   if (!apiKey) {
     return c.json(
@@ -13,13 +12,7 @@ export const apiKeyMiddleware = async (c: Context, next: Next) => {
     )
   }
 
-  const foundKey = await prisma.apiKey.findUnique({
-    where: {
-      key: apiKey,
-    },
-  })
-
-  if (!foundKey) {
+  if (apiKey !== `Bearer ${process.env.CRON_SECRET}`) {
     return c.json(
       {
         message: "Invalid API key",
