@@ -1,5 +1,5 @@
 {
-  "installCommand": "corepack enable && corepack prepare pnpm@latest --activate && pnpm install & pnpm run db-build",
+  "installCommand": "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm run db-build",
   "crons": [
     {
       "path": "/api/check-weekly-winner",
