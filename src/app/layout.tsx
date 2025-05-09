@@ -18,6 +18,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Chads book club",
   description: "A simple book club",
+  openGraph: {
+    title: "Chads book club",
+    description: "A simple book club",
+    images: ["https://books.chads-programming.dev/read.webp"],
+  },
 }
 
 export default function RootLayout({
