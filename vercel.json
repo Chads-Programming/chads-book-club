@@ -1,4 +1,5 @@
 {
+  "installCommand": "pnpm install & pnpm run db-build",
   "crons": [
     {
       "path": "/api/check-weekly-winner",
