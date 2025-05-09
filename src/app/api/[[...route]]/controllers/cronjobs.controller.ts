@@ -6,7 +6,7 @@ export const cronjobsRouter = createRouter()
 
 cronjobsRouter.use("/*", apiKeyMiddleware)
 
-cronjobsRouter.post("/check-weekly-winner", async (c) => {
+cronjobsRouter.get("/check-weekly-winner", async (c) => {
   try {
     const result = await announceWeeklyWinner()
 
